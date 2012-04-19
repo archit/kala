@@ -72,8 +72,8 @@
       if (value.indexOf(":") == -1 && key == 58 && (value.length < 3 || ($.fn.getSelectionStart(this)) < 3)) return true;
 
       // Allow am/pm at the end
-      if (value.length > 0 && value.length < 5 && !value.match(/(a|p|am|pm)/i)) return (key ==  97 || key == 65 || key == 112 || key == 80);
-      if (value.length > 0 && value.length < 5 && !value.match(/m/i)) return (key == 109 || key == 77) ;
+      if (value.length > 0 && value.length < 7 && !value.match(/(a|p|am|pm)/i)) return (key ==  97 || key == 65 || key == 112 || key == 80);
+      if (value.length > 0 && value.length < 7 && !value.match(/m/i)) return (key == 109 || key == 77);
 
       // check for other keys that have special purposes
       //  8   backspace
