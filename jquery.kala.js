@@ -41,7 +41,7 @@
     var value = $(this).val();
     // remove spaces so the math can be simpler
     value = value.replace(/\s*/g, '')
-    // If we're reached the 7 limit (xx:xxpm), just return
+    // If we've reached the 7 limit (xx:xxpm), just return
     if (value.length > 7) return false
 
     // allow enter/return key (only when in an input box)
@@ -65,8 +65,8 @@
 
     // if a number was not pressed
     if (key < 48 || key > 57) {
-      /* ':' only allowed at 2nd or 3rd place and only once. */
-      if (value.indexOf(":") == -1 && key == 58 && (value.length < 3 || ($.fn.getSelectionStart(this)) < 3)) return true;
+      // Allow : only after a number is entered
+      if (value.length > 0 && value.indexOf(":") == -1 && key == 58 && (value.length < 3 || ($.fn.getSelectionStart(this)) < 3)) return true;
 
       // Allow am/pm at the end
       if (value.length > 0 && value.length < 7 && !value.match(/(a|p|am|pm)/i)) return (key ==  97 || key == 65 || key == 112 || key == 80);
