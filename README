@@ -8,3 +8,8 @@ xx : xx am | pm | AM | PM
 Nothing fancy here. Shout out to http://www.texotela.co.uk/code/jquery/numeric/ for inspiring this.
 
 Copyright (C) 2012 Archit Baweja (architbaweja@gmail.com)
+
+ChangeLog
+
+* v0.1
+* basic support for input control input limit
