@@ -1,0 +1,10 @@
+Kala - a jQuery plugin for time inputs.
+
+The primary purpose of this plugin is to be strict about limit-ing the characters allowed in a enabled
+html input. It tries to do its best in restricting input to the format 
+
+xx : xx am | pm | AM | PM
+
+Nothing fancy here. Shout out to http://www.texotela.co.uk/code/jquery/numeric/ for inspiring this.
+
+Copyright (C) 2012 Archit Baweja (architbaweja@gmail.com)
