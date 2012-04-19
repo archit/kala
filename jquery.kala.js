@@ -147,7 +147,7 @@
     var callback = $.data(this, "kala.callback");
     var val = this.value.replace(/\s*g/, '');
     if (val != "") {
-      var re = new RegExp("^(\\d{1,2}(:?\\d+{2})?)(a|p|am|pm)?$");
+      var re = new RegExp("^(\\d{1,2}(:?\\d{2})?)(a|p|am|pm)?$");
       if (!val.match(re)) {
         callback.apply(this);
       }
