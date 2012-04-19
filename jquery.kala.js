@@ -72,8 +72,8 @@
       if (value.indexOf(":") == -1 && key == 58 && (value.length < 3 || ($.fn.getSelectionStart(this)) < 3)) return true;
 
       // Allow am/pm at the end
-      if (value.length < 6) return (key ==  97|| key == 65 || key == 112 || key == 80);
-      if (value.length < 6) return (key == 109);
+      if (value.length < 6) return (key ==  97 || key == 65 || key == 112 || key == 80);
+      if (value.length < 6) return (key == 109 || key == 77) ;
 
       // check for other keys that have special purposes
       //  8   backspace
@@ -147,7 +147,7 @@
     var callback = $.data(this, "kala.callback");
     var val = this.value.replace(/\s*g/, '');
     if (val != "") {
-      var re = new RegExp("^(\\d{1,2}(:?\\d{2})?)(a|p|am|pm)?$");
+      var re = new RegExp("^(\\d{1,2}(:?\\d{2})?)(a|p|am|pm)?$", "i");
       if (!val.match(re)) {
         callback.apply(this);
       }
@@ -156,7 +156,7 @@
 
   $.fn.removeKala = function()
   {
-    return this.data("kala.24", null).data("kala.callback", null).unbind("keypress", $.fn.kala.keypress).unbind("blur", $.fn.kala.blur);
+    return this.data("kala.jackBauer", null).data("kala.callback", null).unbind("keypress", $.fn.kala.keypress).unbind("blur", $.fn.kala.blur);
   }
 
   // Based on code from http://javascript.nwbox.com/cursor_position/ (Diego Perini <dperini@nwbox.com>)
