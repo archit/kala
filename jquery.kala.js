@@ -34,10 +34,20 @@
 
   $.fn.kala.keypress = function(e)
   {
-    // get decimal character and determine if negatives are allowed
+    // get if allow 24 hour format
     var jackBauer = $.data(this, "kala.jackBauer");
     // get the key that was pressed
     var key = e.charCode ? e.charCode : e.keyCode ? e.keyCode : 0;
+
+    // Allow spaces no matter what
+    if (key === 32) return true
+
+    var value = $(this).val();
+    // remove spaces so the math can be simpler
+    value = value.replace(/\s*/g, '')
+    // If we're reached the 7 limit (xx:xxpm), just return
+    if (value.length > 7) return false
+
     // allow enter/return key (only when in an input box)
     if (key == 13 && this.nodeName.toLowerCase() == "input") {
       return true;
@@ -56,11 +66,16 @@
     // allow or deny Ctrl+V (paste), Shift+Ins
     if ((e.ctrlKey && key == 118 /* firefox */) || (e.ctrlKey && key == 86) /* opera */
        || (e.shiftKey && key == 45)) return true;
+
     // if a number was not pressed
     if (key < 48 || key > 57) {
-      var value = $(this).val();
-      /* ':' only allowed at 2nd or 3rd place. */
-      if (value.indexOf(":") != 0 && key == 45 && (value.length < 3 || ($.fn.getSelectionStart(this)) < 3)) return true;
+      /* ':' only allowed at 2nd or 3rd place and only once. */
+      if (value.indexOf(":") == -1 && key == 58 && (value.length < 3 || ($.fn.getSelectionStart(this)) < 3)) return true;
+
+      // Allow am/pm at the end
+      if (value.length < 6) return (key ==  97|| key == 65 || key == 112 || key == 80);
+      if (value.length < 6) return (key == 109);
+
       // check for other keys that have special purposes
       //  8   backspace
       //  9   tab
@@ -70,35 +85,27 @@
       //  37  left
       //  39  right
       //  46  del
-      if ($.inArray([8, 9, 13, 35, 36, 37, 39, 46], key))  {
+      if ($.inArray([8, 9, 13, 35, 36, 37, 39, 46], key) > 0)  {
         // for detecting special keys (listed above)
         // IE does not support 'charCode' and ignores them in keypress anyway
         if (typeof e.charCode != "undefined") {
 	  // special keys have 'keyCode' and 'which' the same (e.g. backspace)
 	  if (e.keyCode == e.which && e.which != 0) {
-	    allow = true;
+	    return true;
 	    // . and delete share the same code, don't allow . (will be set to true later if it is the decimal point)
-	    if (e.which == 46) allow = false;
+	    if (e.which == 46) return false;
 	  } else if (e.keyCode != 0 && e.charCode == 0 && e.which == 0) {
             // or keyCode != 0 and 'charCode'/'which' = 0
-	    allow = true;
+	    return true;
 	  }
         }
       } else {
-        allow = false
-      }
-      // if key pressed is the decimal and it is not already in the field
-      if (decimal && key == decimal.charCodeAt(0)) {
-        if (value.indexOf(decimal) == -1) {
-	  allow = true;
-        } else {
-	  allow = false;
-        }
+        return false
       }
     } else {
-      allow = true;
+      return true;
     }
-    return allow;
+    return false;
   }
 
   $.fn.kala.keyup = function(e)
@@ -107,27 +114,8 @@
     if (val && val.length > 0) {
       // get carat (cursor) position
       var carat = $.fn.getSelectionStart(this);
-      // get decimal character and determine if negatives are allowed
       var jackBauer = $.data(this, "kala.jackBauer");
 
-      // prepend a 0 if necessary
-      if (decimal != "") {
-	// find decimal point
-	var dot = val.indexOf(decimal);
-	// if dot at start, add 0 before
-	if (dot == 0)
-	{
-	  this.value = "0" + val;
-	}
-	// if dot at position 1, check if there is a - symbol before it
-	if (dot == 1 && val.charAt(0) == "-")
-	{
-	  this.value = "-0" + val.substring(1);
-	}
-	val = this.value;
-      }
-      
-      // if pasted in, only allow the following characters
       var validChars = [0,1,2,3,4,5,6,7,8,9,':'];
       // get length of the value (to loop through)
       var length = val.length;
@@ -158,11 +146,10 @@
   {
     var jackBauer = $.data(this, "kala.jackBauer");
     var callback = $.data(this, "kala.callback");
-    var val = this.value;
+    var val = this.value.replace(/\s*g/, '');
     if (val != "") {
-      var re = new RegExp("^\\d+{4}$|^\\d{,2}:\\d+{,2}$");
-      if (!re.exec(val)) {
-        // If there is a regex match error, call callback.
+      var re = new RegExp("^(\\d{1,2}(:?\\d+{2})?)(a|p|am|pm)?$");
+      if (!val.match(re)) {
         callback.apply(this);
       }
     }
