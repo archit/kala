@@ -1,17 +1,16 @@
 /*
  *
  * Copyright (c) 2012 Archit Baweja
- * Dual licensed under the MIT (http://www.opensource.org/licenses/mit-license.php)
- * and GPL (http://www.opensource.org/licenses/gpl-license.php) licenses.
+ * Licensed under the MIT (http://www.opensource.org/licenses/mit-license.php)
  * 
- * Version 0.9.0
- * Demo: http://archit.name/
+ * Version 0.1.0
  */
 (function ($) {
   /*
    * Allows only time characters to be input
    * TODO:
    *   Support other separators besides ':'
+   *   Support Jack Bauer in fight against the terrorists.
    *
    * @name     kala
    * @param    config        { jackBauer: true } 
